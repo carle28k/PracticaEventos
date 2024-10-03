@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
 
 const urlBase='assets';
+let arrayImagenes = [];
 
 
 const arrayBotones=[
@@ -92,6 +93,34 @@ const arrayFotosViajes=[
 ]
 
 
+/* EVENTOS */
+
+//CLICAR EN BOTONES
+document.addEventListener("click", (ev)=>{
+//console.log(ev.target)
+  if (ev.target.matches("#buttons button") ) {
+    let tag= ev.target.id;
+    pintarImagenes(tag)
+  }
+
+  if (ev.target.matches("footer p")) {
+    console.log("este es el footer")
+  }
+})
+
+//CLICAR EN IMAGENES
+document.addEventListener("click", (ev)=>{
+  //console.log(ev.target)
+  if (ev.target.matches("#thumbnail img") ) {
+    let tag= ev.target.id;
+    //console.log(tag)
+    ampliarImagenes(ev.target.id)
+  }
+
+  })
+
+
+//_________________________________________________________
 /* FUNCIONES */
 
 
@@ -109,18 +138,15 @@ const pintarBotones=()=>{
 }
 
 
-pintarBotones()
+
 
 
 
 
 //-----MOSTRAR INFO BOTONES / IMPRIMIR FOTOS-----
+
 const generarArrayImagenes = (tagBoton) => {
   console.log(tagBoton);
-
-  //Limpieza de galería y mensaje
-  gallery.innerHTML = ""
-  textInfo.innerHTML = ""
 
 
   //Creación nuevo array
@@ -132,29 +158,50 @@ const generarArrayImagenes = (tagBoton) => {
     arrayFotosFiltradas = arrayFotosViajes.filter((foto)=>foto.tag.includes(tagBoton))
 
   });
+  return arrayFotosFiltradas
+}
 
-  
+
+
+const pintarImagenes = (tagBoton) =>{
+  arrayImagenes = generarArrayImagenes(tagBoton);
+  console.log(arrayImagenes)
+
+  //Limpieza de galería y mensaje
+  gallery.innerHTML = ""
+  textInfo.innerHTML = ""
+  thumbnail.innerHTML = ""
+
   //Pintar mensaje
     
-    textInfo.innerHTML+=  `
-        <p>Se han encontrado ${arrayFotosFiltradas.length} imágenes con el tag ${tagBoton}</p>
-    `
-  
-  
-  
-  //Pintar imágenes
-  console.log(arrayFotosFiltradas)
-    arrayFotosFiltradas.forEach((item)=>{
-      gallery.innerHTML+=  `
-        <div>
-              <h3>${item.title}</h3>
-              <img id="${item.id}" src="${item.src}" alt="">
-        </div>
-    `
-    })
+  textInfo.innerHTML+=  `
+  <p>Se han encontrado ${arrayImagenes.length} imágenes con el tag ${tagBoton}</p>
+`
 
+  //Pintar imágenes
+//console.log(arrayFotosFiltradas)
+  arrayImagenes.forEach((item, i)=>{
+    if (i < 1) {
+      gallery.innerHTML+=  `
+    <div>
+          <h3>${item.title}</h3>
+          <img id="${item.id}" src="${item.src}" alt="">
+    </div>
+  `
+    } else {
+      thumbnail.innerHTML+=  `
+      
+            <img id="${item.id}" src="${item.src}" alt="">
+    
+    `
+
+
+    }
+
+  })
 
 }
+
 
 
 /*
@@ -167,43 +214,72 @@ const generarArrayImagenes = (tagBoton) => {
 */
 
 
-
-
-
-
-
-//-----DECLARAR VARIABLES BOTONES-----
-const clicarBotones=()=>{
-
-  arrayBotones.forEach((item, i)=>{
-    const boton = document.querySelector(`#${item.id}`)
-    boton.addEventListener("click", () => generarArrayImagenes(item.id))
+//-----CLICAR EN MINIATURA-----
+const ampliarImagenes = (imgID) => {
+  //console.log(imgID)
+  arrayReordenadas = [];
+  arrayImagenes.forEach((item, i)=>{
+    if (item.id == imgID) {
+      arrayReordenadas.unshift(item)
+    }
+    else {
+      arrayReordenadas.push(item)
+    }
   })
-
-}
-
-clicarBotones()
+  console.log("_____")
+  console.log(arrayReordenadas)
 
 
 
-//-----FILTRAR IMAGENES PARA GALERÍA-----
-/*
-const pintarImagenesGaleria = () => {
+  gallery.innerHTML = ""
+  thumbnail.innerHTML = ""
 
-  arrayFotosViajes.array.forEach((item, i)=>{
-
-    if 
-    item.array.forEach((item, i)=>{
+  arrayReordenadas.forEach((item, i)=>{
+    if (i < 1) {
+      gallery.innerHTML+=  `
+    <div>
+          <h3>${item.title}</h3>
+          <img id="${item.id}" src="${item.src}" alt="">
+    </div>
+  `
+    } else {
+      thumbnail.innerHTML+=  `
+      
+            <img id="${item.id}" src="${item.src}" alt="">
     
+    `
+    }
+  })
   
-
-    });
-  
-
-  });
 }
+
+
+
+/*
+1.generarImagenes
+2. Recorrer lista imagenes
+3. Si i es menor que 1 imprimir en A
+4. Si i es igual o mayor que 1 imprimir en B.
+____________
+Nuevas imágenes serán botones
+Si clicamos en imagen X colocarla al inicio de la lista y volver a 2
+
+
 */
 
+
+
+
+
+
+
+
+
+
+/* INVOCACIONES */
+
+
+pintarBotones()
 
 
   });//DOM CARGADO
