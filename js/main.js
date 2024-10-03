@@ -33,54 +33,61 @@ const arrayBotones=[
 const arrayFotosViajes=[
   {
       id:1,
-      src:`${urlBase}/fotos-viajes/viajes-1.jpg`,
+      src:`${urlBase}/FOTOS_VIAJES/viajes-1.jpg`,
       alt:'viajes 1',
       descripcion:'Esta es la descripción de la foto 1',
-      tag: ["mar","arena"]
+      tag: ["mar","arena"],
+      title: "Título imagen 1"
     },
   {
       id:2,
-      src:`${urlBase}/fotos-viajes/viajes-2.jpg`,
+      src:`${urlBase}/FOTOS_VIAJES/viajes-2.jpg`,
       alt:'viajes 2',
       descripcion:'Esta es la descripción de la foto 2',
-      tag: ["mar"]
+      tag: ["mar"],
+      title: "Título imagen 2"
   },
   {
       id:3,
-      src:`${urlBase}/fotos-viajes/viajes-3.jpg`,
+      src:`${urlBase}/FOTOS_VIAJES/viajes-3.jpg`,
       alt:'viajes 3',
       descripcion:'Esta es la descripción de la foto 3',
-      tag: ["senales"]
+      tag: ["senales"],
+      title: "Título imagen 3"
     },
   {
       id:4,
-      src:`${urlBase}/fotos-viajes/viajes-4.jpg`,
+      src:`${urlBase}/FOTOS_VIAJES/viajes-4.jpg`,
       alt:'viajes 4',
       descripcion:'Esta es la descripción de la foto 4',
-      tag: ["edificios"]
+      tag: ["edificios"],
+      title: "Título imagen 4"
   },
   {
       id:5,
-      src:`${urlBase}/fotos-viajes/viajes-5.jpg`,
+      src:`${urlBase}/FOTOS_VIAJES/viajes-5.jpg`,
       alt:'viajes 5',
       descripcion:'Esta es la descripción de la foto 5',
-      tag: ["edificios"]
+      tag: ["edificios"],
+      title: "Título imagen 5"
   },
 
   {
       id:6,
-      src:`${urlBase}/fotos-viajes/viajes-6.jpg`,
+      src:`${urlBase}/FOTOS_VIAJES/viajes-6.jpg`,
       alt:'viajes 6',
       descripcion:'Esta es la descripción de la foto 6',
-      tag: ["mar","arena"]
+      tag: ["mar","arena"],
+      title: "Título imagen 6"
   },
 
   {
       id:7,
-      src:`${urlBase}/fotos-viajes/viajes-7.jpg`,
+      src:`${urlBase}/FOTOS_VIAJES/viajes-7.jpg`,
       alt:'viajes 7',
       descripcion:'Esta es la descripción de la foto 7',
-      tag: ["edificios"]
+      tag: ["edificios"],
+      title: "Título imagen 7"
   }
 ]
 
@@ -107,11 +114,61 @@ pintarBotones()
 
 
 
-//-----MOSTRAR INFO BOTONES-----
-const mostrarMensaje = (text) => {
-  console.log(text);
+//-----MOSTRAR INFO BOTONES / IMPRIMIR FOTOS-----
+const generarArrayImagenes = (tagBoton) => {
+  console.log(tagBoton);
+
+  //Limpieza de galería y mensaje
+  gallery.innerHTML = ""
+  textInfo.innerHTML = ""
+
+
+  //Creación nuevo array
+  let arrayFotosFiltradas = [];
+
+  arrayFotosViajes.forEach((item)=>{
+    //console.log(item.tag)
+
+    arrayFotosFiltradas = arrayFotosViajes.filter((foto)=>foto.tag.includes(tagBoton))
+
+  });
+
+  
+  //Pintar mensaje
+    
+    textInfo.innerHTML+=  `
+        <p>Se han encontrado ${arrayFotosFiltradas.length} imágenes con el tag ${tagBoton}</p>
+    `
+  
+  
+  
+  //Pintar imágenes
+  console.log(arrayFotosFiltradas)
+    arrayFotosFiltradas.forEach((item)=>{
+      gallery.innerHTML+=  `
+        <div>
+              <h3>${item.title}</h3>
+              <img id="${item.id}" src="${item.src}" alt="">
+        </div>
+    `
+    })
+
 
 }
+
+
+/*
+1.generarImagenes
+2. Recorrer lista imagenes
+2.5 Recorrer sublista tags
+3.    Si valor entrada es igual a tag
+        imprimir imagen
+
+*/
+
+
+
+
 
 
 
@@ -120,7 +177,7 @@ const clicarBotones=()=>{
 
   arrayBotones.forEach((item, i)=>{
     const boton = document.querySelector(`#${item.id}`)
-    boton.addEventListener("click", mostrarMensaje)
+    boton.addEventListener("click", () => generarArrayImagenes(item.id))
   })
 
 }
@@ -131,7 +188,7 @@ clicarBotones()
 
 //-----FILTRAR IMAGENES PARA GALERÍA-----
 /*
-const pintarImagenesGalería = () => {
+const pintarImagenesGaleria = () => {
 
   arrayFotosViajes.array.forEach((item, i)=>{
 
